@@ -1,0 +1,77 @@
+package services
+
+import (
+	"strings"
+
+	"mini-project/models"
+)
+
+var products = []models.Product{
+	{ID: 1, Name: "Pc Portable HP Pavilion 15 eg3061nk", Price: 2629, Category: "Informatique", Subcategory: "Ordinateurs", Description: "Ordinateur portable 15.6\" FHD, Intel Core i7-1355U, 16 Go RAM, 512 Go SSD, Windows 11", Image: "https://www.tunisianet.com.tn/391244-large/pc-portable-hp-pavilion-15-eg3061nk-i7-1355u-16-go-512-go-ssd-argent.jpg"},
+	{ID: 2, Name: "Pc Portable Lenovo ThinkPad E14 Gen 6", Price: 2899, Category: "Informatique", Subcategory: "Ordinateurs", Description: "Ordinateur portable professionnel 14\" WUXGA, Intel Core i5-13420H, 16 Go RAM, 512 Go SSD, Windows 11 Pro", Image: "https://www.tunisianet.com.tn/447814-large/pc-portable-lenovo-thinkpad-e14-gen-6-ultra-5-125u-16-go-ddr5-512-go-ssd-noir.jpg"},
+	{ID: 3, Name: "Pc Portable ASUS Vivobook 15 X1504VA", Price: 1999, Category: "Informatique", Subcategory: "Ordinateurs", Description: "Ordinateur portable 15.6\" FHD, Intel Core i3-N305, 8 Go RAM, 256 Go SSD, Windows 11", Image: "https://www.tunisianet.com.tn/447198-large/pc-portable-asus-vivobook-15-x1504va-u7-150u-12-go-512-go-ssd-windows-11-silver.jpg"},
+	{ID: 4, Name: "Disque Dur SSD Samsung 860 Evo 2.5,1 To", Price: 349, Category: "Informatique", Subcategory: "Stockages", Description: "Disque SSD interne 2.5\" 1 To, SATA III 6 Gbps, lecture 560 Mo/s, écriture 530 Mo/s", Image: "https://www.tunisianet.com.tn/128152-large/disque-dur-ssd-samsung-860-evo-25-2-to.jpg"},
+	{ID: 5, Name: "Disque dur externe Seagate BackUp Plus Slim 2, 2 To", Price: 239, Category: "Informatique", Subcategory: "Stockages", Description: "Disque dur externe portable 2.5\" 2 To, USB 3.0, noir, sauvegarde automatique", Image: "https://www.tunisianet.com.tn/43335-large/disque-dur-externe-seagate-backup-plus-slim-2-2-to.jpg"},
+	{ID: 6, Name: "Routeur WiFi 6 AX1800 bi bande TP Link ARCHER AX23", Price: 159, Category: "Informatique", Subcategory: "Réseaux et connectivité", Description: "Routeur WiFi 6 AX1800 double bande, 4 ports Gigabit, USB 3.0, prise en charge VPN", Image: "https://www.tunisianet.com.tn/273262-large/routeur-wifi-6-ax1800-bi-bande-tp-link-archer-ax23.jpg"},
+	{ID: 7, Name: "Ecran Dell 27 SE2722H Full HD", Price: 1299, Category: "Informatique", Subcategory: "Périphériques", Description: "Moniteur 27\" Full HD VA, 75 Hz, temps de réponse 8 ms, HDMI/VGA, AMD FreeSync, design sans bordures, garantie 3 ans", Image: "https://www.tunisianet.com.tn/253665-large/ecran-dell-27-se2722h-full-hd-75hz-garantie-3-ans.jpg"},
+	{ID: 8, Name: "Souris Pro Sans Fil Logitech MX Master 3S", Price: 349, Category: "Informatique", Subcategory: "Périphériques", Description: "Souris sans fil ergonomique, 8000 DPI, molette MagSpeed, USB-C, silencieuse, multi-appareils", Image: "https://www.tunisianet.com.tn/472578-large/souris-pro-sans-fil-logitech-mx-master-3s.jpg"},
+	{ID: 9, Name: "Clavier Gaming Filaire Mécanique Razer BlackWidow V4 X", Price: 449, Category: "Informatique", Subcategory: "Périphériques", Description: "Clavier mécanique gaming, switches Razer Green, RGB Chroma, USB-C, repose-poignet", Image: "https://www.tunisianet.com.tn/400356-large/clavier-gaming-filaire-mecanique-razer-blackwidow-v4-x-rgb-usb-switch-vert-noir.jpg"},
+	{ID: 10, Name: "Carte graphique MSI GeForce RTX 4060 VENTUS 2X BLACK OC", Price: 1499, Category: "Informatique", Subcategory: "Composants", Description: "Carte graphique 8 Go GDDR6, DLSS 3, Ray Tracing, PCIe 4.0, double ventilateur, 192 bits", Image: "https://www.tunisianet.com.tn/318670-large/carte-graphique-msi-geforce-rtx-4060-ventus-2x-black-oc-8g-gddr6.jpg"},
+	{ID: 11, Name: "Apple iPhone 16 Pro Max 5G", Price: 4999, Category: "Téléphonie", Subcategory: "Smartphones", Description: "Smartphone Apple A18 Pro, écran 6.9\" OLED 120 Hz, 256 Go stockage, triple appareil photo 48 Mpx, Titanium", Image: "https://www.tunisianet.com.tn/419629-large/apple-iphone-16-pro-max-5g-256-go-blanc-titanium.jpg"},
+	{ID: 12, Name: "Smartphone Samsung Galaxy S24 Ultra", Price: 4299, Category: "Téléphonie", Subcategory: "Smartphones", Description: "Smartphone Samsung Exynos 2400, écran 6.8\" Dynamic AMOLED 2X 120 Hz, 256 Go, S Pen intégré, appareil 200 Mpx", Image: "https://www.tunisianet.com.tn/351689-large/smartphone-samsung-galaxy-s24-ultra-5g-12-go-256-go-noir.jpg"},
+	{ID: 13, Name: "Smartphone XIAOMI Redmi Note 13 PRO", Price: 999, Category: "Téléphonie", Subcategory: "Smartphones", Description: "Smartphone Snapdragon 7s Gen 2, écran 6.67\" AMOLED 120 Hz, 8 Go RAM, 256 Go, appareil 200 Mpx", Image: "https://www.tunisianet.com.tn/353403-large/smartphone-xiaomi-redmi-note-13-pro-8go-256go-noir.jpg"},
+	{ID: 14, Name: "Google Pixel 8 Pro 128Go", Price: 3499, Category: "Téléphonie", Subcategory: "Smartphones", Description: "Smartphone Google Tensor G3, écran 6.7\" LTPO OLED 120 Hz, 128 Go, appareil photo 50 Mpx, Android 14", Image: "https://i5.walmartimages.com/seo/Google-Pixel-Pixel-8-Pro-5G-128GB-Smartphone-Unlocked-Brown_0e78530d-1d64-4a0b-8908-0a2d2fddd685.1d982c229dab89765ed08c10fdf1c5b0.jpeg"},
+	{ID: 15, Name: "Smartphone Huawei P50 Pro", Price: 2999, Category: "Téléphonie", Subcategory: "Smartphones", Description: "Smartphone Huawei, écran 6.67\" LTPO OLED 120 Hz, 512 Go, appareil XMAGE 48 Mpx, batterie 4815 mAh", Image: "https://www.tunisianet.com.tn/258056-large/smartphone-huawei-p50-pro-8-go-256-go-4g-double-sim-gold.jpg"},
+	{ID: 16, Name: "MONTRE CONNECTÉE SAMSUNG GALAXY WATCH 6", Price: 899, Category: "Téléphonie", Subcategory: "Smartwatch", Description: "Montre connectée Super AMOLED 1.47\", suivi santé avancé, GPS, 40 mm, Bluetooth, Wear OS", Image: "https://www.tunisianet.com.tn/355089-large/montre-connectee-samsung-galaxy-watch-6-44-mm-noir.jpg"},
+	{ID: 17, Name: "MONTRE CONNECTÉE XIAOMI SMART BAND 8 PRO", Price: 199, Category: "Téléphonie", Subcategory: "Smartwatch", Description: "Montre connectée légère, écran AMOLED 1.74\", GPS intégré, suivi sportif, batterie 14 jours, 5 ATM", Image: "https://www.tunisianet.com.tn/371744-large/montre-connectee-xiaomi-smart-band-8-pro-noir.jpg"},
+	{ID: 18, Name: "AirPods 2 avec boitier de charge Lightning", Price: 899, Category: "Téléphonie", Subcategory: "Accessoires", Description: "Écouteurs sans fil True Wireless, réduction de bruit active Adaptive, boîtier USB-C, Spatial Audio, puce H2", Image: "https://www.tunisianet.com.tn/160338-large/airpods-avec-boitier-de-charge-sans-fil.jpg"},
+	{ID: 19, Name: "Coque antichoc 1,5 mm pour iPhone 15 Pro Max 6,7 transparente", Price: 49, Category: "Téléphonie", Subcategory: "Accessoires", Description: "Coque de protection transparente en silicone doux au toucher, compatible iPhone 15, anti-jaunissement, bordures surélevées", Image: "https://www.tunisianet.com.tn/451272-large/coque-antichoc-15-mm-pour-iphone-15-pro-61-transparente.jpg"},
+	{ID: 20, Name: "Chargeur Samsung Ultra rapide secteur Type C 45W Noir", Price: 79, Category: "Téléphonie", Subcategory: "Accessoires", Description: "Chargeur mural USB-C 45W, Super Fast Charging 2.0, compatible Samsung Galaxy S24/S23 et autres appareils USB-C", Image: "https://www.tunisianet.com.tn/158222-large/chargeur-samsung-ultra-rapide-secteur-type-c-45w-noir.jpg"},
+	{ID: 21, Name: "Sèche cheveux Philips Ionic Hairdryer  2200W", Price: 249, Category: "Santé & Beauté", Subcategory: "Toiletries", Description: "Sèche-cheveux professionnel 2400 W, technologie ionique, 6 accessoires, thermostatique, 6 vitesses", Image: "https://www.tunisianet.com.tn/61098-large/seche-cheveux-philips-ionic-hairdryer-hp8232-03-2200w.jpg"},
+	{ID: 22, Name: "Tondeuse à cheveux Philips Hairclipper series 7000", Price: 329, Category: "Santé & Beauté", Subcategory: "Toiletries", Description: "Tondeuse multi-usages, lames auto-affûtées en titane, 20 longueurs de coupe, lavable à l'eau, 100 min autonomie", Image: "https://www.tunisianet.com.tn/58119-large/tondeuse-a-cheveux-philips-hairclipper-series-7000.jpg"},
+	{ID: 23, Name: "Tensiomètre Omron M3 Comfort", Price: 149, Category: "Santé & Beauté", Subcategory: "Moniteurs de santé", Description: "Tensiomètre électronique de bras, détection de fibrillation auriculaire, 2 x 60 mémoires, brassard 22-42 cm", Image: "https://www.omron-healthcare.fr/images/fit=crop-50-50,fm=webp,h=1200,q=60,w=1200/products/m3_comfort_02-2.jpg?signature=946958faf2585cbc11587826bc05f0e87269b437fb257a8d5b503051024f5bdb"},
+	{ID: 24, Name: "Pèse Personne APRILLA ABS-1033 150Kg - Noir", Price: 299, Category: "Santé & Beauté", Subcategory: "Moniteurs de santé", Description: "Balance connectée Wi-Fi, mesure du poids et composition corporelle, application Health Mate, pour 8 utilisateurs", Image: "https://www.mytek.tn/media/catalog/product/p/_/p_se-personne-aprilla-abs-1033-150kg---noir.jpg"},
+	{ID: 25, Name: "Thermomètre Braun ThermoScan 7 IRT 6520", Price: 199, Category: "Santé & Beauté", Subcategory: "Moniteurs de santé", Description: "Thermomètre auriculaire infrarouge avec technologie Age Precision, écran couleur rétro-éclairé, pour toute la famille", Image: "https://www.tunisianet.com.tn/34817-large/thermometre-braun-thermoscan-7-irt-6520.jpg"},
+	{ID: 26, Name: "Brosse à dents électrique Sensitive Oral-B Vitality 100 Cross Action  Noir", Price: 349, Category: "Santé & Beauté", Subcategory: "Produits pour soins personnels", Description: "Brosse à dents électrique connectée, IA reconnaissance dent par dent, 6 modes de brossage, capteur de pression", Image: "https://www.tunisianet.com.tn/424240-large/brosse-a-dents-electrique-sensitive-oral-b-vitality-100-cross-action-noir.jpg"},
+	{ID: 27, Name: "Epilateur électrique Braun Silk-épil 9 9 sur 980 SkinSpa SensoSmart avec 13 Accessoires et tondeuses 3 en 1", Price: 399, Category: "Santé & Beauté", Subcategory: "Produits pour soins personnels", Description: "Épilateur électrique avec tête Micro-Grip, lumière SmartLight intégrée, rechargeable, étanche, 2 vitesses", Image: "https://www.tunisianet.com.tn/371766-large/epilateur-electrique-braun-silk-epil-9-9980-skinspa-sensosmart-avec-13-accessoires-et-tondeuses-3-en-1.jpg"},
+	{ID: 28, Name: "Aspirateur Nasal Bébé NoseFrida", Price: 49, Category: "Santé & Beauté", Subcategory: "Bébé & enfants", Description: "Aspirateur nasal manuel hygiénique pour bébé, aspiration douce par la bouche, embouts jetables, âge 0-3 ans", Image: "https://m.media-amazon.com/images/I/71x9h8NxWnL._AC_SX522_.jpg"},
+	{ID: 29, Name: "Philips Avent Dect SCD50210 Audio Baby Monitor with Night Light and Smart Eco Mode", Price: 399, Category: "Santé & Beauté", Subcategory: "Bébé & enfants", Description: "Babyphone vidéo écran 3.5\", vision nocturne infrarouge, technologie DECT sans interférences, capteur de température, veilleuse", Image: "https://m.media-amazon.com/images/I/816oxchQ7BL._SX569_.jpg"},
+	{ID: 30, Name: "Doliprane 500 mg x16 Comprimés", Price: 8, Category: "Santé & Beauté", Subcategory: "Pharmaceutiques & médicaments", Description: "Paracétamol 500 mg, boîte de 16 comprimés, antidouleur et antipyrétique, usage adulte et enfant à partir de 27 kg", Image: "https://www.pharma-medicaments.com/wp-content/uploads/2022/05/3400941631825-600x398.jpg"},
+	{ID: 31, Name: "Aspirateur Balai DYSON V11 Advanced 230/ Bleu et Violet  479333 01", Price: 2199, Category: "Électroménager", Subcategory: "Aspirateurs", Description: "Aspirateur balai sans fil, détection laser des particules, écran LCD, 3 modes, autonomie 60 min, tête Detech", Image: "https://www.tunisianet.com.tn/422160-large/aspirateur-balai-dyson-v11-advanced-610w-bleu-et-violet-479333-01.jpg"},
+	{ID: 32, Name: "ASPIRATEUR BALAI KIWI 600W", Price: 1599, Category: "Électroménager", Subcategory: "Aspirateurs", Description: "Aspirateur robot laveur, navigation laser 360°, aspiration 5000 Pa, cartographie multi-étages, application Ecovacs", Image: "https://www.tunisianet.com.tn/446146-large/aspirateur-balai-kiwi-600w.jpg"},
+	{ID: 33, Name: "Machine à laver Samsung Frontale 9Kg Add Wash AI Control  Inox", Price: 1899, Category: "Électroménager", Subcategory: "Machine à laver", Description: "Lave-linge frontal 9 kg, AI Control, AddWash, classe A+++, 1400 tr/min, écran digital", Image: "https://www.tunisianet.com.tn/472736-large/machine-a-laver-samsung-frontale-add-wash-inox-ww90t654dln-ai-control-9kg.jpg"},
+	{ID: 34, Name: "Machine à laver Automatique Lavante Séchante LG 6 Motion 10kg Silver", Price: 2199, Category: "Électroménager", Subcategory: "Machine à laver", Description: "Lave-linge frontal 10.5 kg, AI Direct Drive, Steam, Wi-Fi ThinQ, classe A+++, 1400 tr/min", Image: "https://www.tunisianet.com.tn/44158-large/machine-a-laver-automatique-lavante-sechante-lg-6-motion-10kg-silver.jpg"},
+	{ID: 35, Name: "Sèche linge Pompe à Chaleur 9kg  DV90T8240SH", Price: 1799, Category: "Électroménager", Subcategory: "Sèche-linge", Description: "Sèche-linge condensation 9 kg, pompe à chaleur, AI Optimal Dry, classe A++, 15 programmes", Image: "https://images.samsung.com/is/image/samsung/fr-dryer-dv90t8240shs3-dv90t8240sh-s3-frontwhite-313266649?$1164_776_PNG$"},
+	{ID: 36, Name: "SECHE LINGE HOOVER A CONDENSATION 8KG  Noir HLEC8LGB 80", Price: 1999, Category: "Électroménager", Subcategory: "Sèche-linge", Description: "Sèche-linge condensation 9 kg, pompe à chaleur, AutoDry, SelfCleaning Condenser, classe A++", Image: "https://www.tunisianet.com.tn/470457-large/seche-linge-hoover-a-condensation-8kg-noir-hlec8lgb-80.jpg"},
+	{ID: 37, Name: "Lave vaisselle Newstar 12 Couverts Avec afficheur  Blanc", Price: 2299, Category: "Électroménager", Subcategory: "Lave-vaisselle", Description: "Lave-vaisselle pose libre 60 cm, 14 couverts, PerfectDry, EcoSilence Drive, classe A++, 6 programmes", Image: "https://www.tunisianet.com.tn/471427-large/lave-vaisselle-newstar-12-couverts-avec-afficheur-blanc.jpg"},
+	{ID: 38, Name: "Lave vaisselle Whirlpool 14 Couverts / Inox + Pack LAVAX Gratuite + 50DT Bon de Réduction", Price: 1999, Category: "Électroménager", Subcategory: "Lave-vaisselle", Description: "Lave-vaisselle pose libre 60 cm, 14 couverts, 6e Sens, PowerClean, classe A+, 5 programmes", Image: "https://www.tunisianet.com.tn/480489-large/lave-vaisselle-whirlpool-14-couverts-inox-pack-lavax-gratuite-50dt-bon-de-reduction-.jpg"},
+	{ID: 39, Name: "Four Encastrable Focus F525X / 60cm / Inox", Price: 899, Category: "Électroménager", Subcategory: "Fours", Description: "Four encastrable 71 L, 8 fonctions de cuisson, pyrolyse, finition inox, minuterie digitale, éclairage halogène", Image: "https://www.tunisianet.com.tn/474134-large/four-encastrable-focus-f525x-60cm-inox.jpg"},
+	{ID: 40, Name: "Four Electrique Encastrable Biolux / Noir / MFE60VD", Price: 3299, Category: "Électroménager", Subcategory: "Fours", Description: "Four encastrable 71 L, PerfectBake, PerfectRoast, pyrolyse, Home Connect, 13 fonctions, finition inox", Image: "https://www.tunisianet.com.tn/415309-large/four-electrique-encastrable-biolux-fe60vd-noir.jpg"},
+}
+
+func SearchProducts(query string) []models.Product {
+	if query == "" {
+		return products
+	}
+
+	q := strings.ToLower(query)
+	var result []models.Product
+	for _, p := range products {
+		if strings.Contains(strings.ToLower(p.Name), q) ||
+			strings.Contains(strings.ToLower(p.Description), q) ||
+			strings.Contains(strings.ToLower(p.Category), q) ||
+			strings.Contains(strings.ToLower(p.Subcategory), q) {
+			result = append(result, p)
+		}
+	}
+	return result
+}
+
+func GetProductByID(id int) *models.Product {
+	for _, p := range products {
+		if p.ID == id {
+			return &p
+		}
+	}
+	return nil
+}
